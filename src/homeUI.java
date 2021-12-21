@@ -151,7 +151,6 @@ public class homeUI extends JFrame implements ActionListener {
             if (dictManagement.SearchbySlang(textField.getText()) == null)
                 JOptionPane.showMessageDialog(null, "No slang found!", "Not existed", JOptionPane.INFORMATION_MESSAGE);
             else mod.addRow(list);
-
         }
         if(command == "searchMean"){
             mod.getDataVector().removeAllElements();
