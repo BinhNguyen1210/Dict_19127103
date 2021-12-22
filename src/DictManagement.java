@@ -21,7 +21,7 @@ public class DictManagement {
         this.dict = dict;
     }
 
-    public void DictInitilize() {
+    public void DictInitialize() {
         FileReader fr;
         String s = "";
         try {
@@ -54,18 +54,6 @@ public class DictManagement {
         }
     }
 
-    public void ShowSlangList() {
-        Set<String> tempkey = dict.keySet();
-        for(String tk:tempkey){
-            System.out.print(tk + " ");
-            int n = dict.get(tk).size();
-            for (int i = 0; i < n; i++) {
-                System.out.print(dict.get(tk).get(i).toString() + " ");
-            }
-            System.out.println("");
-        }
-    }
-
     public void WriteToFile() {
         FileWriter fw;
         try {
@@ -88,24 +76,36 @@ public class DictManagement {
         }
     }
 
+    public Boolean isInDictionary(String slang) {
+        Set<String> tempkey = dict.keySet();
+        Vector<String> found = new Vector<>();
+        String s;
+        for(String tk:tempkey) {
+            if (tk.toLowerCase().equals(slang.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void AddSlangWord(String slang, String meaning, String option) {
         Set<String> tempkey = dict.keySet();
-        Boolean isContain = false;
+        Boolean isInDict = false;
         for(String tk:tempkey) {
             if (tk.equals(slang))
-                isContain = true;
+                isInDict = true;
         }
 
         Vector<String> m = new Vector<>();
         m.add(meaning);
-        if (isContain == true) {
+        if (isInDict == true) {
             if (option == "overwrite")
                 dict.put(slang, m);
             if (option == "duplicate") {
                 dict.get(slang).add(meaning);
             }
         }
-        if (isContain == false) {
+        if (isInDict == false) {
             dict.put(slang, m);
         }
     }
@@ -113,6 +113,7 @@ public class DictManagement {
     public Vector<String> SearchbySlang(String slang) {
         Set<String> tempkey = dict.keySet();
         Vector<String> found = new Vector<>();
+        String s;
         for(String tk:tempkey) {
             if (tk.toLowerCase().equals(slang.toLowerCase())) {
                 found.add(tk);
@@ -126,13 +127,13 @@ public class DictManagement {
     public Vector<String[]> SearchbyMeaning(String meaning) {
         Set<String> tempkey = dict.keySet();
         Vector<String[]> found = new Vector<>();
-        boolean k=false;
+        boolean k = false;
         for(String tk:tempkey) {
             if (dict.get(tk).toString().toLowerCase().contains(meaning.toLowerCase())) {
-                k=true;
-                String []temp=new String[2];
-                temp[0]=tk;
-                temp[1]=dict.get(tk).toString();
+                k = true;
+                String []temp = new String[2];
+                temp[0] = tk;
+                temp[1] = dict.get(tk).toString();
                 found.add(temp);
             }
         }
@@ -140,5 +141,93 @@ public class DictManagement {
             return found;
         }
         return null;
+    }
+
+    public void WriteHistory(String s) {
+        FileWriter fw;
+        try {
+            File file = new File("history.txt");
+            fw = new FileWriter(file, true);
+            fw.write(s);
+            fw.close();
+        }
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public String getMeaning(String slang) {
+        Set<String> tempkey = dict.keySet();
+        for(String tk:tempkey) {
+            if (tk.toLowerCase().equals(slang.toLowerCase())) {
+                return dict.get(tk).toString();
+            }
+        }
+        return "Not found";
+    }
+
+    public Vector<String[]> HistoryInitialize() {
+        FileReader fr;
+        String s = "";
+        Vector<String[]> history = new Vector<>();;
+        try {
+            fr = new FileReader("history.txt");
+            int data = fr.read();
+            StringBuilder line = new StringBuilder();
+            while (data != -1) {
+                if ((char)data == '\n') {
+                    String temp = s;
+                    s = temp + line.toString();
+
+                    String[] element = s.split("`");
+                    history.add(element);
+
+                    s = "";
+                    line.delete(0, line.length());
+                    data = fr.read();
+                    continue;
+                }
+                line.append((char)data);
+                data = fr.read();
+            }
+            fr.close();
+            return history;
+        }
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public void ClearHistory() throws IOException {
+        try{
+            BufferedWriter bw = new BufferedWriter(new FileWriter("history.txt"));
+            bw.write("");
+            bw.close();
+        }
+        catch (Exception ev){ }
+    }
+
+    public void Reset() {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            File file = new File("test.txt");
+            file.delete();
+            File source = new File("slang.txt");
+
+            is = new FileInputStream(source);
+            os = new FileOutputStream(file);
+
+            byte[] buffer = new byte[1024];
+            int length;
+
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        }
+        catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

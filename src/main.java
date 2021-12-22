@@ -6,8 +6,9 @@
  */
 public class main {
     public static void main(String args[]) {
-        DictManagement dm = new DictManagement();
-        dm.DictInitilize();
-        dm.ShowSlangList();
+        //System.out.println(java.time.LocalTime.now());
+        //System.out.println(java.time.LocalDate.now());
+        String s = java.time.LocalTime.now().toString();
+        System.out.println(s + " yes");
     }
 }

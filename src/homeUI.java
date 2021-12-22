@@ -15,6 +15,7 @@ public class homeUI extends JFrame implements ActionListener {
     private Button searchSlang;
     private Button searchMean;
     private Button history;
+    private Button add;
     private Button edit;
     private Button delete;
     private Button reset;
@@ -67,6 +68,15 @@ public class homeUI extends JFrame implements ActionListener {
         jPanel1.add(history);
         jPanel1.add(Box.createRigidArea(new Dimension(0, 10)));
 
+        add = new Button("Add new Slang Word");
+        add.setActionCommand("add");
+        add.addActionListener(this);
+        add.setMaximumSize(new Dimension(300,300));
+        add.setPreferredSize(new Dimension(300,60));
+        add.setFont(new Font("Arial",Font.PLAIN,16));
+        jPanel1.add(add);
+        jPanel1.add(Box.createRigidArea(new Dimension(0, 10)));
+
         edit = new Button("Edit");
         edit.setActionCommand("edit");
         edit.addActionListener(this);
@@ -111,12 +121,19 @@ public class homeUI extends JFrame implements ActionListener {
         quiz.setFont(new Font("Arial",Font.PLAIN,16));
         jPanel1.add(quiz);
 
-        jPanel1.setBackground((Color.gray));
-        this.add(jPanel1, BorderLayout.WEST);
+        jPanel1.setBackground(Color.gray);
+
+        JPanel jPanel2 = new JPanel();
+        BoxLayout box2 = new BoxLayout(jPanel2, BoxLayout.X_AXIS);
+        jPanel2.setLayout(box2);
+        jPanel2.add(Box.createRigidArea(new Dimension(10, 0)));
+        jPanel2.add(jPanel1);
+        jPanel2.setBackground(Color.gray);
+
+        this.add(jPanel2, BorderLayout.WEST);
         this.add(Box.createRigidArea(new Dimension(10, 0)), BorderLayout.CENTER);
 
         mod = new DefaultTableModel(null,tableLabel);
-        //mod.addRow(a);
         table = new JTable(mod);
         table.getTableHeader().setFont(new Font("Serif", Font.PLAIN,20));
         table.setFont(new Font("Serif", Font.PLAIN,17));
@@ -141,9 +158,9 @@ public class homeUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String command =e.getActionCommand();
+        String command = e.getActionCommand();
         DictManagement dictManagement = new DictManagement();
-        dictManagement.DictInitilize();
+        dictManagement.DictInitialize();
         if(command == "searchSlang"){
             mod.getDataVector().removeAllElements();
             Vector<String> list = new Vector<>();
@@ -151,6 +168,9 @@ public class homeUI extends JFrame implements ActionListener {
             if (dictManagement.SearchbySlang(textField.getText()) == null)
                 JOptionPane.showMessageDialog(null, "No slang found!", "Not existed", JOptionPane.INFORMATION_MESSAGE);
             else mod.addRow(list);
+
+            String s = java.time.LocalDate.now().toString() + "`" + java.time.LocalTime.now().toString() + "`" + textField.getText() + "`" + dictManagement.getMeaning(textField.getText()) + "\n";
+            dictManagement.WriteHistory(s);
         }
         if(command == "searchMean"){
             mod.getDataVector().removeAllElements();
@@ -159,14 +179,26 @@ public class homeUI extends JFrame implements ActionListener {
             if (dictManagement.SearchbyMeaning(textField.getText()) == null)
                 JOptionPane.showMessageDialog(null, "No meaning found!", "Not existed", JOptionPane.INFORMATION_MESSAGE);
             else{
-                for(int i=0; i<list.size();i++){
+                for(int i = 0; i < list.size();i++){
                     mod.addRow(list.get(i));
                 }
-
             }
         }
         if(command == "history"){
+            this.dispose();
+            historyUI hist = new historyUI();
+            hist.showHistory();
 
+            Vector<String[]> list = new Vector<>();
+            list = dictManagement.HistoryInitialize();
+            for(int i = 0; i < list.size();i++){
+                hist.mod.addRow(list.get(i));
+            }
+        }
+        if(command == "add") {
+            this.dispose();
+            addSlangUI add = new addSlangUI();
+            add.showAddbox();
         }
         if(command == "edit"){
 
@@ -175,7 +207,7 @@ public class homeUI extends JFrame implements ActionListener {
 
         }
         if(command == "reset"){
-
+            dictManagement.Reset();
         }
         if(command == "random"){
 
