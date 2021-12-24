@@ -1,8 +1,6 @@
 import java.io.*;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.Vector;
+import java.lang.reflect.WildcardType;
+import java.util.*;
 
 /**
  * PACKAGE_NAME
@@ -78,8 +76,6 @@ public class DictManagement {
 
     public Boolean isInDictionary(String slang) {
         Set<String> tempkey = dict.keySet();
-        Vector<String> found = new Vector<>();
-        String s;
         for(String tk:tempkey) {
             if (tk.toLowerCase().equals(slang.toLowerCase())) {
                 return true;
@@ -89,25 +85,17 @@ public class DictManagement {
     }
 
     public void AddSlangWord(String slang, String meaning, String option) {
-        Set<String> tempkey = dict.keySet();
-        Boolean isInDict = false;
-        for(String tk:tempkey) {
-            if (tk.equals(slang))
-                isInDict = true;
-        }
-
         Vector<String> m = new Vector<>();
         m.add(meaning);
-        if (isInDict == true) {
-            if (option == "overwrite")
-                dict.put(slang, m);
-            if (option == "duplicate") {
-                dict.get(slang).add(meaning);
-            }
+        if (option == "overwrite")
+            dict.put(slang, m);
+        if (option == "duplicate") {
+            dict.get(slang).add(meaning);
         }
-        if (isInDict == false) {
+        if (option == "addnew") {
             dict.put(slang, m);
         }
+        WriteToFile();
     }
 
     public Vector<String> SearchbySlang(String slang) {
@@ -229,5 +217,31 @@ public class DictManagement {
         catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void DeleteSlangWord(String slang) {
+        dict.remove(slang);
+        WriteToFile();
+    }
+
+    public void EditSlangWord(String slang, String meaning) {
+        Vector<String> m = new Vector<>();
+        String[] mean = meaning.split(",");
+        m.add(mean[0]);
+        for (int i = 1; i < mean.length; i++) {
+            m.add(mean[i].substring(1, mean[i].length()));
+        }
+        dict.put(slang, m);
+        WriteToFile();
+    }
+
+    public String RandomSlangWord() {
+        Set<String> keySet = dict.keySet();
+        List<String> keyList = new ArrayList<>(keySet);
+
+        int size = keyList.size() - 1;
+        int randIndex = new Random().nextInt(size);
+
+        return keyList.get(randIndex);
     }
 }

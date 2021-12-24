@@ -50,7 +50,7 @@ public class homeUI extends JFrame implements ActionListener {
         jPanel1.add(searchSlang);
         jPanel1.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        searchMean = new Button("Search by Meaning");
+        searchMean = new Button("Search by Definition");
         searchMean.setActionCommand("searchMean");
         searchMean.addActionListener(this);
         searchMean.setMaximumSize(new Dimension(300,300));
@@ -201,16 +201,20 @@ public class homeUI extends JFrame implements ActionListener {
             add.showAddbox();
         }
         if(command == "edit"){
-
+            this.dispose();
+            editSlangUI edit = new editSlangUI();
+            edit.showEditbox();
         }
         if(command == "delete"){
-
+            this.dispose();
+            deleteSlangUI delete = new deleteSlangUI();
+            delete.showDeleteBox();
         }
         if(command == "reset"){
             dictManagement.Reset();
         }
         if(command == "random"){
-
+            System.out.println(dictManagement.RandomSlangWord());
         }
         if(command == "quiz"){
 

@@ -14,7 +14,7 @@ import java.util.Vector;
  */
 public class historyUI extends JFrame implements ActionListener {
     private JTable histTable;
-    String[] tableLabel = {"Date", "Time", "Slang searched", "Slang meaning"};
+    String[] tableLabel = {"Date", "Time", "Slang searched", "Definition"};
     public DefaultTableModel mod;
     private Button clear;
     private Button back;
