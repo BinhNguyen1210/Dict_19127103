@@ -214,7 +214,10 @@ public class homeUI extends JFrame implements ActionListener {
             dictManagement.Reset();
         }
         if(command == "random"){
-            System.out.println(dictManagement.RandomSlangWord());
+            //System.out.println(dictManagement.RandomSlangWord());
+            this.dispose();
+            randomSlangUI rand = new randomSlangUI();
+            rand.showRandomBox();
         }
         if(command == "quiz"){
 
