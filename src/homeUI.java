@@ -177,7 +177,7 @@ public class homeUI extends JFrame implements ActionListener {
             Vector<String[]> list = new Vector<>();
             list = dictManagement.SearchbyMeaning(textField.getText());
             if (dictManagement.SearchbyMeaning(textField.getText()) == null)
-                JOptionPane.showMessageDialog(null, "No meaning found!", "Not existed", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No definition found!", "Not existed", JOptionPane.INFORMATION_MESSAGE);
             else{
                 for(int i = 0; i < list.size();i++){
                     mod.addRow(list.get(i));
@@ -220,7 +220,9 @@ public class homeUI extends JFrame implements ActionListener {
             rand.showRandomBox();
         }
         if(command == "quiz"){
-
+            this.dispose();
+            quizUI quiz = new quizUI();
+            quiz.showQuizBox();
         }
     }
 }
