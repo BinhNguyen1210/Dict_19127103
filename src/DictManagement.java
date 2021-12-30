@@ -19,6 +19,8 @@ public class DictManagement {
         this.dict = dict;
     }
 
+
+    // Sắp xếp word vào TreeMap
     public void DictInitialize() {
         FileReader fr;
         String s = "";
