@@ -18,9 +18,7 @@ public class DictManagement {
     public DictManagement(TreeMap<String, Vector<String>> dict) {
         this.dict = dict;
     }
-
-
-    // Sắp xếp word vào TreeMap
+    
     public void DictInitialize() {
         FileReader fr;
         String s = "";
