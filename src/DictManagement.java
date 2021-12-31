@@ -18,7 +18,7 @@ public class DictManagement {
     public DictManagement(TreeMap<String, Vector<String>> dict) {
         this.dict = dict;
     }
-    
+
     public void DictInitialize() {
         FileReader fr;
         String s = "";
