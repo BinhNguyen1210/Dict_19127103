@@ -139,7 +139,7 @@ public class homeUI extends JFrame implements ActionListener {
         table.setFont(new Font("Serif", Font.PLAIN,17));
         table.setRowHeight(30);
         table.setDefaultEditor(Object.class, null);
-
+        
         JScrollPane scrollPane = new JScrollPane(table);
 
         this.add(scrollPane, BorderLayout.EAST);

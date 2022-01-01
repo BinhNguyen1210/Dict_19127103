@@ -218,6 +218,7 @@ public class quizSlangUI extends JFrame implements ActionListener {
                 if (a.getLabel().equals(answer)) {
                     a.setBackground(Color.green);
                 }
+
                 JOptionPane.showMessageDialog(null, "Good luck next time!", "Wrong answer", JOptionPane.INFORMATION_MESSAGE);
             }
         }
